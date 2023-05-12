@@ -10,7 +10,8 @@ if __name__=='__main__':
         ser1.write(pump1.pump_sp(i*100)) 
 
     time.sleep(5)
-
+    pump1.pump_stop()
+    
     pump1.pump_closs()
     if ser1.isOpen():             
         print("串口关闭失败。")
