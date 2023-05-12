@@ -1,5 +1,7 @@
+import os
 import serial
 import serial.tools.list_ports
+import time
 # import threading
 
 class Pump():
@@ -13,7 +15,9 @@ class Pump():
         '''
         ports_list = list(serial.tools.list_ports.comports())
         if len(ports_list) <= 0:
-            print("无串口设备。")
+            print("无串口设备,程序即将关闭。")
+            time.sleep(1)
+            os._exit(0)
         else:
             print("可用的串口设备如下：")
             for comport in ports_list:
@@ -44,6 +48,8 @@ class Pump():
             print(self.ser.name)     # 输出串口号
         else:
             print("打开串口失败。")
+            time.sleep(1)
+            os._exit(0)
         return self.ser
     
     def pump_closs(self): 
@@ -55,6 +61,14 @@ class Pump():
         self.ser.write(send_data) 
         self.ser.close()
 
+    def pump_stop(self): 
+        '''
+        停止泵
+        '''
+        stop = 'E9 01 06 57 4A 00 00 00 01 1B'
+        send_data = bytes.fromhex(stop)
+        self.ser.write(send_data) 
+    
     def String_dec(self, 
                    string 
                    ):
